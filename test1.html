@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>初识canvas</title>
+</head>
+<body>
+    <canvas id="test1" width="600" height="600">
+        您的浏览器暂时不支持canvas，请先升级浏览器
+        <!-- 当浏览器不支持canvas时，就会渲染标签内的内容，否则就会忽略 -->
+    </canvas>
+
+    <script>
+        let canvas = document.getElementById('test1');
+
+        if(canvas.getContext) {
+
+            let ctx = canvas.getContext('2d');
+            // 画两个矩形
+            ctx.fillStyle = "rgb(200, 0, 0)";
+
+            ctx.fillRect(10, 10, 55, 50);
+
+            ctx.fillStyle = "rgba(0, 0, 200, .5)";
+
+            ctx.fillRect(30, 30, 55, 50);
+            
+            // 绘制线段
+            ctx.beginPath();
+            ctx.moveTo(100, 100);
+            ctx.lineTo(200, 200);
+            ctx.closePath();
+            ctx.stroke();
+
+            // 绘制三角形
+            ctx.beginPath();
+            ctx.moveTo(100, 10);
+            ctx.lineTo(100, 40);
+            ctx.lineTo(120, 20);
+            ctx.lineTo(100, 10);
+            ctx.closePath();
+            ctx.stroke();
+            
+
+
+        } else {
+            // 不支持
+        }
+        
+
+        /*
+            绘制矩形有 3 种方法：
+                fillRect(x, y, width, height)       绘制一个填充矩形
+                strokeRect(x, y, width, height)     绘制一个矩形边框
+                clearRect(x, y, width, height)      清除指定矩形区域，变成完全透明。
+
+                (x, y)      指定矩形左上角坐标
+
+
+            
+            绘制 路径：
+                1、注意事项：
+                    创建路径起点
+                    调用绘制方法绘制路径
+                    闭合路径
+                    通过描边或者填充路径区域渲染图形
+
+                2、需要用到的方法
+                    beginPath()     新建一条路径，路径一旦创建成功，图形绘制命令被指向到路径上生成路径
+                    moveTo(x, y)        画笔移动到坐标（x, y）。想当于设置路径的起始点坐标。
+                    closePath()     闭合路径，图形绘制命令重新指向上下文。
+                    stroke()        通过线条来绘制图形轮廓
+                    fill()      通过填充路径的内容区域生成实心的图形
+
+
+            绘制 线段
+
+
+         */
+
+
+
+
+        
+
+    </script>
+</body>
+</html>
