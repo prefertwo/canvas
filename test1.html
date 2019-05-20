@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>初识canvas</title>
+
+    <style>
+        #test1 {
+            border: solid #F00 2px;
+        }
+    </style>
 </head>
 <body>
     <canvas id="test1" width="600" height="600">
@@ -42,11 +48,28 @@
             ctx.lineTo(100, 10);
             ctx.closePath();
             ctx.stroke();
+
+            // 矩形
+            ctx.fillRect(300, 300, 100, 100);
+            ctx.clearRect( 320, 320, 60, 60);
+            ctx.strokeRect(330, 330, 40, 40);
             
+            // 笑脸
+            ctx.beginPath();
+            ctx.arc(165, 75, 50, 0, Math.PI*2, true);
+            ctx.moveTo(200, 75);
+            ctx.arc(165, 75, 35, 0, Math.PI, false );
+            ctx.moveTo(151, 60);
+            ctx.arc(145, 60, 6, 0, Math.PI*2, true);
+            ctx.moveTo(191, 60);
+            ctx.arc(185, 60, 6, 0, Math.PI*2, true);
+            // ctx.arc()
+            ctx.stroke();
 
 
         } else {
             // 不支持
+            alert('该浏览器不支持canvas');
         }
         
 
@@ -74,8 +97,19 @@
                     stroke()        通过线条来绘制图形轮廓
                     fill()      通过填充路径的内容区域生成实心的图形
 
+                3、使用 fill() 时，路径自动闭合，使用 stroke() 时，不会闭合，需要使用 closePath() 来闭合路径。
+
 
             绘制 线段
+                lineTo(x, y)
+                绘制一条 从当前位置，到 （x, y）的直线。
+
+            绘制 圆弧或者圆
+                可以使用 arc() 方法，或者 arcTo() 方法。
+                ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+
+                画 以 (x, y) 为圆心，以 radius 为半径的圆弧（圆），从 startAngle 开始 到 endAngle 结束，按照 anticlockwise 方向来生成，true 为逆时针，默认为顺时针。
+
 
 
          */

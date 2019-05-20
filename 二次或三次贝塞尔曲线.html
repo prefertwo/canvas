@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>canvas贝塞尔曲线</title>
+
+    <style>
+        #canvasBox1,
+        #canvasBox2 {
+            border: #f00 solid 1px;
+            margin: 20px;
+        }
+        p {
+            text-indent: 2em;
+            font-size: 16px;
+            color: #666699;
+        }
+    </style>
+    
+</head>
+<body>
+
+    <p>
+        贝塞尔曲线一般用来绘制 有规律的复杂图形。
+    </p>
+
+    <div>
+        <h3>二次贝塞尔曲线</h3>
+        <canvas id="canvasBox1" width="200" height="200"></canvas>
+    </div>
+    <div>
+        <h3>三次贝塞尔曲线</h3>
+        <canvas id="canvasBox2" width="200" height="200"></canvas>
+    </div>
+
+
+    <script>
+        let canvas1 = document.getElementById('canvasBox1');
+        if(canvas1.getContext) {
+            // 
+            let ctx = canvas1.getContext('2d');
+            ctx.beginPath();
+            ctx.moveTo(75, 25);
+            ctx.quadraticCurveTo(25, 25, 25, 62.5);
+            ctx.quadraticCurveTo(25, 100, 50, 100);
+            ctx.quadraticCurveTo(50, 120, 30, 125);
+            ctx.quadraticCurveTo(60, 120, 65, 100);
+            ctx.quadraticCurveTo(125, 100, 125, 62.5);
+            ctx.quadraticCurveTo(125, 25, 75, 25);
+            ctx.stroke();
+            
+        } else {
+            alert('该浏览器不支持canvas，请升级');
+        }
+
+        let canvas2 = document.getElementById('canvasBox2');
+        if(canvas2.getContext) {
+            // 
+            let ctx = canvas2.getContext('2d');
+
+            ctx.beginPath();
+            ctx.moveTo(74, 40);
+            // ctx.lineTo(50,25);
+            // ctx.lineTo(20,62.5);
+            ctx.bezierCurveTo(75, 37, 70, 25, 50, 25);
+            ctx.bezierCurveTo(20, 25, 20, 62.5, 22, 62.5);
+            ctx.bezierCurveTo(26,80,40,102,75,120);
+            ctx.bezierCurveTo(110,102,128,80,130,58.5);
+            ctx.bezierCurveTo(130,62.5,130,25,100,25);
+            ctx.bezierCurveTo(85,25,75,37,75,40);
+            ctx.fillStyle = '#ff0000';
+            ctx.fill();
+            // ctx.stroke();
+            
+        } else {
+            alert('该浏览器不支持canvas，请升级');
+        }
+    </script>
+    
+    
+</body>
+</html>

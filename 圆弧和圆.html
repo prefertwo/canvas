@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>canvas图形</title>
+    <style>
+        #canvasBox {
+            border: #f00 solid 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="canvasBox" width="600" height="600">该版本浏览器不支持canvas图形</canvas>
+
+    <script>
+        let content = document.getElementById('canvasBox');
+
+        if(content.getContext) {
+
+            let ctx = content.getContext('2d');
+
+            for(let i=0;i<4;i++) {
+                for(let j=0;j<3;j++) {
+                    ctx.beginPath();
+                    let x = 25 + j*50;
+                    let y = 25 + i*50;
+                    let radius = 20;
+                    let startAngle = 0;
+                    let endAngle = Math.PI + (Math.PI*j)/2;
+                    let anticlockwise = i%2 == 0 ? false : true;
+
+                    ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+
+                    if(i > 1) {
+                        ctx.fill();
+                    } else {
+                        ctx.stroke();
+                    }
+                }
+            }
+
+
+        } else {
+            alert('浏览器不支持canvas')
+        }
+    </script>
+    
+</body>
+
+</html>
