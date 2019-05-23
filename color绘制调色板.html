@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>color 绘制调色板</title>
+
+    <link rel="stylesheet" href="css/index.css">
+    
+</head>
+<body>
+    <div class="wrap">
+        <div class="intro">
+            <p></p>
+        </div>
+
+        <canvas id="canvas" width="800" height="600"></canvas>
+    </div>
+    
+</body>
+
+<script>
+    let canvas = document.getElementById('canvas');
+    if(canvas.getContext) {
+        let ctx = canvas.getContext('2d');
+
+        for(let i=0;i<10;i++) {
+            for(let j=0;j<10;j++) {
+                ctx.fillStyle = `rgb( ${Math.floor(255-25.5*i)}, ${Math.floor(255-25.5*j)}, 0 )`;
+                // console.log( `rgb( ${Math.floor(255-25.5*i)}, ${Math.floor(255-25.5*j)}, 0 )` );
+                ctx.fillRect(j*25, i*25, 25, 25);
+            }
+        }
+
+        for(let m=0;m<10;m++) {
+            for(let n=0;n<10;n++) {
+                ctx.strokeStyle = `rgb( ${Math.floor(255-25.5*m)}, ${Math.floor(255-25.5*n)}, 0 )`;
+
+                ctx.beginPath();
+                ctx.arc(280+40*m, 30+40*n, 15, 0, Math.PI*2);
+                ctx.stroke();
+            }
+        }
+        
+        
+    }
+</script>
+
+
+</html>
