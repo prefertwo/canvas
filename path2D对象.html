@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>path2D对象</title>
+    <link rel="stylesheet" href="css/index.css">
+
+    <style>
+        #canvas {
+            border: solid #f00 1px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="wrap">
+        <div class="intro">
+            <p>
+                Path2D()会返回一个新初始化的Path2D对象（可能将某一个路径作为变量——创建一个它的副本，或者将一个包含SVG path数据的字符串作为变量）。
+            </p>
+
+        </div>
+        
+        <canvas id="canvas" width="400" height="400">浏览器不支持 canvas API</canvas>
+
+    </div>
+    
+</body>
+
+<script>
+    function draw() {
+        let canvas = document.getElementById('canvas');
+        if(canvas.getContext) {
+            // 
+            let ctx = canvas.getContext('2d');
+
+            let rectangle = new Path2D();
+            rectangle.rect(10, 10, 50, 50);
+
+            let circle = new Path2D();
+            circle.moveTo(125, 35);
+            circle.arc(100, 35, 25, 0, Math.PI*2, true);
+
+            ctx.strokeStyle = 'red';
+            ctx.stroke(rectangle);
+
+            ctx.fillStyle = '#ff0';
+            ctx.fill(circle);
+
+            // svg 路径
+            let p = new Path2D('M10 100 h 80 v 80 h -80 Z');
+
+            ctx.fillStyle = 'rgb(255,165,0)';
+            ctx.fill(p);
+
+        } else {
+            alert('not support canvas')
+        }
+    }
+
+    draw();
+</script>
+
+
+</html>
