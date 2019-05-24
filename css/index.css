@@ -11,6 +11,7 @@
     text-indent: 2em;
 }
 
-#canvas {
+#canvas,
+.canvas-box {
     border: solid #f00 1px;
 }
