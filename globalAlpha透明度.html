@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>透明度使用</title>
+
+    <link rel="stylesheet" href="css/index.css">
+    
+</head>
+<body>
+    <div class="wrap">
+        <div class="intro">
+            <p>
+                    除了可以绘制实色图形，我们还可以用 canvas 来绘制半透明的图形。通过设置 globalAlpha 属性或者使用一个半透明颜色作为轮廓或填充的样式。
+                    <br>
+                    globalAlpha = transparencyValue
+                    这个属性影响到 canvas 里所有图形的透明度，有效的值范围是 0.0 （完全透明）到 1.0（完全不透明），默认是 1.0。<br>
+                    globalAlpha 属性在需要绘制大量拥有相同透明度的图形时候相当高效。<br>
+                    因为 strokeStyle 和 fillStyle 属性接受符合 CSS 3 规范的颜色值，那我们可以用下面的写法来设置具有透明度的颜色。<br>
+                    <code>
+                        ctx.strokeStyle = "rgba(255,0,0,0.5)";<br>
+                        ctx.fillStyle = "rgba(255,0,0,0.5)";
+                    </code>
+                    
+            </p>
+        </div>
+        <canvas id="canvas" class="canvas-box" width="200" height="200"></canvas>
+
+
+
+        <canvas id="canvas-rgba" class="canvas-box" width="200" height="200"></canvas>
+    </div>
+</body>
+
+<script>
+    let canvas = document.getElementById('canvas');
+    let canvasB = document.getElementById('canvas-rgba');
+    if(canvas.getContext) {
+        let ctx = canvas.getContext('2d');
+
+        ctx.fillStyle = '#FD0';
+        ctx.fillRect(0, 0, 100, 100);
+
+        ctx.fillStyle = '#6C0';
+        ctx.fillRect(100, 0, 100, 100);
+        
+        ctx.fillStyle = '#09F';
+        ctx.fillRect(0, 100, 100, 100);
+
+        ctx.fillStyle = '#F30';
+        ctx.fillRect(100, 100, 100, 100);
+
+        ctx.fillStyle = '#FFF';
+        ctx.globalAlpha = 0.2; // 貌似仅对 他之后的设置起作用。
+
+        for(let i=0;i<8;i++) {
+            ctx.beginPath();
+            ctx.arc(100, 100, 10+12*i, 0, Math.PI*2);
+            ctx.fill();
+        }
+
+        // 第二个 画布
+        let ctxB = canvasB.getContext('2d');
+
+        ctxB.fillStyle = 'rgb(255,221,0)';
+        ctxB.fillRect(0, 0, 200, 50);
+
+        ctxB.fillStyle = 'rgb(102,204,0)';
+        ctxB.fillRect(0, 50, 200, 50);
+
+        ctxB.fillStyle = 'rgb(0,153,255)';
+        ctxB.fillRect(0, 100, 200, 50);
+
+        ctxB.fillStyle = 'rgb(255,51,0)';
+        ctxB.fillRect(0, 150, 200, 50);
+
+        for(let m=0;m<10;m++) {
+            ctxB.fillStyle = `rgba(255, 255, 255, ${(m+1)/10})`;
+            // console.log(`rgba(255, 255, 255, ${(m+1)/10})`);
+            for(let n=0;n<4;n++) {
+                ctxB.fillRect(5+19*m, 5+50*n, 19, 40);
+            }
+        }
+        
+    }
+</script>
+
+</html>
