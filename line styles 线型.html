@@ -23,6 +23,17 @@
 
 
             </pre>
+            <pre>
+                createLinearGradient(x1, y1, x2, y2)
+                    四个参数表示渐变的起点（x1, y1）和 终点（x2, y2）。
+                
+                createRadialGradient(x1, y1, r1, x2, y2, r2)
+                    六个参数表示起点是以（x1, y1）为圆心 r1 为半径的圆，和 终点 以（x2, y2）为圆心 r2 为半径的圆。
+                
+                gradient.addColorStop(position, color)
+                    addColorStop 方法接受 2 个参数，position 参数必须是一个 0.0 与 1.0 之间的数值，表示渐变中颜色所在的相对位置。
+                    例如，0.5 表示颜色会出现在正中间。color 参数必须是一个有效的 CSS 颜色值（如 #FFF， rgba(0,0,0,1)，等等）
+            </pre>
             
         </div>
         <canvas id="canvas" class="canvas-box" width="200" height="200"></canvas>
@@ -30,7 +41,9 @@
         <canvas id="canvasC" class="canvas-box" width="200"></canvas>
         <canvas id="canvasD" class="canvas-box" width="200"></canvas>
         <canvas id="canvasE" class="canvas-box" width="200"></canvas>
-        <canvas id="canvasF" class="canvas-box" width="200"></canvas>
+        <canvas id="canvasF" class="canvas-box" width="200" height="200"></canvas>
+        <canvas id="canvasG" class="canvas-box" width="200" height="200"></canvas>
+        
 
     </div>
 </body>
@@ -42,6 +55,7 @@
     let canvasD = document.getElementById('canvasD');
     let canvasE = document.getElementById('canvasE');
     let canvasF = document.getElementById('canvasF');
+    let canvasG = document.getElementById('canvasG');
 
     if(canvas.getContext) {
         // 
@@ -128,14 +142,60 @@
         }
         nixiang();
 
+        // 画布 E 渐变色
+        let ctxE = canvasE.getContext('2d');
+        let linegrad = ctxE.createLinearGradient(0, 0, 200, 100);
+        // linegrad.addColorStop(0, '#00ABEB');
+        linegrad.addColorStop(0, '#f00');
+        linegrad.addColorStop(0.5, '#26C000');
+        linegrad.addColorStop(1, '#fff');
+
+        ctxE.fillStyle = linegrad;
+        ctxE.fillRect(0, 0, 200, 100);
         
+        // 画布 F 渐变
+        let ctxF = canvasF.getContext('2d');
+        let radialGrad = ctxF.createRadialGradient(100, 100, 10, 100, 100, 80);
+        radialGrad.addColorStop(0, '#A7D30C');
+        radialGrad.addColorStop(0.3, '#019F62');
+        radialGrad.addColorStop(0.5, '#f00');
+        radialGrad.addColorStop(0.8, '#ff0');
+        radialGrad.addColorStop(1, 'rgba(1,159,98,0)')
 
+        ctxF.fillStyle = radialGrad;
+        ctxF.fillRect(0, 0, 200, 200);
 
+        // 画布 G 渐变
+        let ctxG = canvasG.getContext('2d');
 
+        var radgrad = ctxG.createRadialGradient(45,45,10,52,50,30);
+        radgrad.addColorStop(0, '#A7D30C');
+        radgrad.addColorStop(0.9, '#019F62');
+        radgrad.addColorStop(1, 'rgba(1,159,98,0)');
+        
+        var radgrad2 = ctxG.createRadialGradient(105,105,20,112,120,50);
+        radgrad2.addColorStop(0, '#FF5F98');
+        radgrad2.addColorStop(0.75, '#FF0188');
+        radgrad2.addColorStop(1, 'rgba(255,1,136,0)');
 
+        var radgrad3 = ctxG.createRadialGradient(95,15,15,102,20,40);
+        radgrad3.addColorStop(0, '#00C9FF');
+        radgrad3.addColorStop(0.8, '#00B5E2');
+        radgrad3.addColorStop(1, 'rgba(0,201,255,0)');
 
+        var radgrad4 = ctxG.createRadialGradient(0,150,50,0,140,90);
+        radgrad4.addColorStop(0, '#F4F201');
+        radgrad4.addColorStop(0.8, '#E4C700');
+        radgrad4.addColorStop(1, 'rgba(228,199,0,0)');
 
-
+        ctxG.fillStyle = radgrad4;
+        ctxG.fillRect(0,0,150,150);
+        ctxG.fillStyle = radgrad3;
+        ctxG.fillRect(0,0,150,150);
+        ctxG.fillStyle = radgrad2;
+        ctxG.fillRect(0,0,150,150);
+        ctxG.fillStyle = radgrad;
+        ctxG.fillRect(0,0,150,150);
 
         
         
