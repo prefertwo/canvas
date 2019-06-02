@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>绘制文本</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="wrap">
+        <div class="section">
+            <div class="title">文本绘制</div>
+            <canvas id="canvasA" class="canvas-box"></canvas>
+        </div>
+
+        <script>
+            let canvasA = document.getElementById('canvasA');
+            if(canvasA.getContext) {
+                let ctxA = canvasA.getContext('2d');
+
+                ctxA.font = "34px serif";
+                ctxA.fillText('这是文本', 10, 40); // 填充文本
+
+                ctxA.strokeText('另一个文本', 10, 80); // 文本边框
+            }
+        </script>
+
+        <div class="section">
+            <div class="title">drawImage</div>
+            <canvas id="canvasB" class="canvas-box"></canvas>
+        </div>
+
+        <script>
+            let ctxB = document.getElementById('canvasB').getContext('2d');
+
+            let img = new Image();
+            img.src = 'imgs/chang.gif';
+            img.onload = function() {
+                for(let i=0;i<3;i++) {
+                    for(let j=0;j<2;j++) {
+                        ctxB.drawImage(img, i*100, j*75, 100, 75); // 长：50，高：30
+                    }
+                }
+            }
+            // ctxB.strokeText('背景图', 10, 40);
+        </script>
+
+        <div class="section">
+            <div class="title">变换</div>
+            <canvas id="canvasC" class="canvas-box"></canvas>
+        </div>
+        <script>
+            let ctxC = document.getElementById('canvasC').getContext('2d');
+
+            // save(), restore() 方法
+            ctxC.fillRect(0, 0, 150, 150);
+            ctxC.save();
+
+            ctxC.fillStyle = "#09F";
+            ctxC.fillRect(15, 15, 120, 120);
+
+            ctxC.save();
+            ctxC.fillStyle = "#FFF";
+            ctxC.globalAlpha = 0.5;
+            ctxC.fillRect(30, 30, 90, 90);
+
+            ctxC.restore();
+            ctxC.fillRect(45,45,60,60);
+
+            ctxC.restore();
+            ctxC.fillRect(60, 60, 30, 30);
+
+        </script>
+
+
+
+        <div class="section">
+            <div class="title">变换</div>
+            <canvas id="canvasD" class="canvas-box"></canvas>
+        </div>
+        <script>
+            let ctxD = document.getElementById('canvasD').getContext('2d');
+            for(let i=0;i<6;i++) {
+                for(let j=0;j<3;j++) {
+                    ctxD.save();
+                    // let str = `rgba(${51*i}, ${255-51*i}, 255)`;
+                    // console.log(str);
+                    ctxD.fillStyle = `rgba(${51*i}, ${255-51*i}, 255)`;
+                    ctxD.translate(10+i*50, 10+j*50);
+                    ctxD.fillRect(0, 0, 25, 25);
+                    ctxD.restore();
+                }
+            }
+        </script>
+
+        <div class="section">
+            <div class="title">旋转</div>
+            <canvas id="canvasE" class="canvas-box"></canvas>
+        </div>
+        <script>
+            let ctxE = document.getElementById('canvasE').getContext('2d');
+            ctxE.translate(75, 75); // 坐标原点移动到（75, 75）
+
+            for(let i=1;i<6;i++) {
+                ctxE.save();
+                ctxE.fillStyle = `rgba(${51*i}, ${255-51*i}, 255)`;
+
+                for(let j=0;j<6+6*i;j++) {
+                    ctxE.rotate(Math.PI*2/(6*i));
+                    ctxE.beginPath();
+                    ctxE.arc(0, i*12.5, 5, 0, Math.PI*2, true);
+                    ctxE.fill();
+                }
+
+                ctxE.restore();
+            }
+        </script>
+
+        <div class="section">
+            <div class="title">缩放</div>
+            <canvas id="canvasF" class="canvas-box" width="300" height="300"></canvas>
+        </div>
+        <script>
+            let ctxF = document.getElementById('canvasF').getContext('2d');
+            ctxF.fillStyle = "#fc0";
+            ctxF.fillRect(0, 0, 300, 300);
+
+            // 无缩放 -- 原图
+            ctxF.translate(50, 50);
+            ctxF.fillStyle = '#ff0';
+            drawSpirograph(ctxF, 30);
+            ctxF.save();
+
+            // 整体缩放 0.6 倍
+            ctxF.translate(100, 0);
+            ctxF.fillStyle = '#ff0';
+            ctxF.scale(0.6, 0.6);
+            drawSpirograph(ctxF, 30);
+
+            ctxF.restore();
+            ctxF.translate(50, 60);
+            ctxF.scale(2, .8);
+            drawSpirograph(ctxF, 30);
+
+            ctxF.translate(0, 140);
+            ctxF.scale(.8, 3);
+            drawSpirograph(ctxF, 30);
+
+            function drawSpirograph(ctx, x) {
+                ctx.beginPath();
+                ctx.arc(0, 0, x, 0, Math.PI*2, true);
+                ctx.fill();
+            }
+
+        </script>
+
+        <div class="section">
+            <div class="title">变形</div>
+            <canvas id="canvasG" class="canvas-box" height="300"></canvas>
+        </div>
+        <script>
+            let canvasG = document.getElementById('canvasG');
+            let ctxG = canvasG.getContext('2d');
+
+            let width = canvasG.width;
+            let height = canvasG.height;
+            // console.log(width + '==' + height);
+            ctxG.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctxG.fillRect(0, 0, width, height);
+            // transform(m11, m12, m21, m22, dx, dy)  
+            //  m11 == 水平方向缩放， m12 == 水平方向的偏移， m21 == 竖直方向的倾斜偏移， m22 = 竖直方向的缩放， dx == 水平方向移动， dy == 竖直方向移动
+            draw(ctxG);
+
+            function draw(ctx) {
+                let sin = Math.sin(Math.PI/6);
+                let cos = Math.cos(Math.PI/6);
+                ctx.translate(100, 100);
+                let c = 0;
+                for(let i=0;i<=12;i++) {
+                    c = Math.floor(255/ 12 *i);
+                    ctx.fillStyle = `rgba(${c}, ${c}, ${c})`
+                    ctx.fillRect(0, 0, 100, 10);
+                    ctx.transform(cos, sin, -sin, cos, 0, 0);
+                }
+
+                ctx.setTransform(1, 1, 1, 1, 0, 0); // 参数依次：水平旋转==水平缩放的倍数，水平倾斜==正数顺时针倾斜，垂直倾斜==正数向右倾斜， 垂直缩放==垂直方向缩放倍数， 水平移动， 垂直移动
+                ctx.fillStyle = "rgba(255, 128, 255, 0.5)";
+                ctx.fillRect(0, 0, 100, 100);
+            }
+        </script>
+
+        <div class="section">
+            <div class="title">裁剪路径</div>
+            <canvas id="canvasH" class="canvas-box" width="300" height="300"></canvas>
+        </div>
+        <script>
+            let ctxH = document.getElementById('canvasH').getContext('2d');
+
+            function drawStar(ctx, r) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(r, 0);
+                for(let i=0;i<9;i++) {
+                    ctx.rotate(Math.PI/5);
+                    if(i%2 == 0) {
+                        ctx.lineTo( (r/0.525731)*0.200811, 0 );
+                    } else {
+                        ctx.lineTo(r, 0);
+                    }
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            }
+
+            function draw(ctx) {
+                ctx.fillRect(0, 0, 300, 300);
+                ctx.translate(150, 150);
+
+                ctx.beginPath();
+                ctx.arc(0, 0, 150, 0, Math.PI*2, true);
+                ctx.clip(); // 裁剪上面的圆作为背景
+
+                // background
+                let lingrad = ctx.createLinearGradient(0, -150, 0, 150);
+                lingrad.addColorStop(0, '#232256');
+                lingrad.addColorStop(1, '#143778');
+
+                ctx.fillStyle = lingrad;
+                ctx.fillRect(-150, -150, 300, 300); // 给背景上色
+
+                // stars
+                for(let j=0;j<50;j++) {
+                    ctx.save();
+                    ctx.fillStyle = '#fff';
+                    ctx.translate(75-Math.floor(Math.random()*150),75-Math.floor(Math.random()*300));
+                    drawStar(ctx, Math.floor(Math.random()*4)+4);
+                    ctx.restore();
+                }
+            }
+
+            draw(ctxH);
+        </script>
+
+
+
+
+
+        
+        
+        
+        
+        
+        
+    </div>
+</body>
+</html>
