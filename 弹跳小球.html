@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>弹跳小球</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="section">
+        <div class="title">弹跳小球</div>
+        <canvas id="canvas" class="canvas-box" width="600" height="300"></canvas>
+    </div>
+
+    <script>
+        let canvas = document.getElementById('canvas')
+        let ctx = canvas.getContext('2d');
+        let raf; // 动画的名称，为了取消动画的时候用
+        let running = false; // 控制鼠标移入时、点击时 小球的状态
+
+        // 包含一些相关属性以及 draw 函数的 ball 对象
+        let ball = {
+            x: 100,
+            y: 100,
+            vx: 5,
+            vy: 2,
+            radius: 25,
+            color: 'blue',
+            draw: function() {
+                ctx.beginPath();
+                ctx.arc( this.x, this.y, this.radius, 0, Math.PI*2, true );
+                ctx.closePath();
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        function clear() {
+            ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function draw() {
+            // ctx.clearRect(0, 0, canvas.width, canvas.height);
+            clear();
+            ball.draw();
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+            // ball.vx *= 0.99;
+            // ball.vy += 0.25;
+
+            // ball.vy *= .99;
+            // ball.vy += .25;
+
+            // 25 是小球半径
+            if(ball.x + ball.vx > canvas.width-25 || ball.x + ball.vx < 25 ) { // 水平方向边界
+                ball.vx = -ball.vx;
+            }
+            if(ball.y + ball.vy > canvas.height-25 || ball.y + ball.vy < 25 ) { // 垂直方向边界
+                ball.vy = -ball.vy;
+            }
+
+            raf = window.requestAnimationFrame(draw);
+        }
+
+        // 下面这三个函数是将小球的动作和鼠标动作绑定
+        /* canvas.addEventListener('mousemove', function(e) {
+            if(!running) {
+                // ctx.clearRect(0, 0, canvas.width, canvas.height)
+                clear();
+                ball.x = e.clientX;
+                ball.y = e.clientY - 45;
+                ball.draw();
+            }
+        })
+
+        canvas.addEventListener('click', function() {
+            if(!running) {
+                raf = window.requestAnimationFrame(draw);
+                running = true;
+            }
+        });
+
+        canvas.addEventListener('mouseout', function() {
+            window.cancelAnimationFrame(raf);
+            running = false;
+        }) */
+
+        raf = window.requestAnimationFrame(draw); // 让小球动起来
+
+        ball.draw();
+    </script>
+</body>
+</html>
