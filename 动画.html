@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>动画</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="section">
+        <div class="title">太阳系的动画</div>
+        <canvas id="canvasA" class="canvas-box" width="300" height="300"></canvas>
+    </div>
+    <script>
+        let sun = new Image();
+        let moon = new Image();
+        let earch = new Image();
+        function init() {
+            sun.src = 'https://mdn.mozillademos.org/files/1456/Canvas_sun.png';
+            moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';
+            earch.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
+            window.requestAnimationFrame(draw);
+        }
+        function draw() {
+            let ctxA = document.getElementById('canvasA').getContext('2d');
+
+            ctxA.globalCompositeOperation = 'destination-over';
+            ctxA.clearRect(0, 0, 400, 400); // 清除此区域
+            ctxA.fillStyle = 'rgba(0, 0, 0, 0.4)';
+            ctxA.strokeStyle = 'rgba(0, 153, 255, 0.4)';
+            ctxA.save();
+            ctxA.translate(150, 150);
+
+            // earth
+            let time = new Date();
+            ctxA.rotate( ((2*Math.PI)/60)*time.getSeconds() + ((2*Math.PI)/60000)*time.getMilliseconds() );
+            // let str = ((2*Math.PI)/60)*time.getSeconds() + ((2*Math.PI)/60000)*time.getMilliseconds();
+            // console.log(str);
+            ctxA.translate(105, 0);
+            ctxA.fillRect(0, -12, 50, 24); // shadow
+            ctxA.drawImage(earch, -12, -12);
+
+            // moon
+            ctxA.save();
+            ctxA.rotate( ((2*Math.PI)/6)*time.getSeconds() + ((2*Math.PI)/60000)*time.getMilliseconds() );
+            ctxA.translate(0, 28.5);
+            ctxA.drawImage(moon, -3.5, -3.5);
+            ctxA.restore();
+
+            ctxA.restore();
+            ctxA.beginPath();
+            ctxA.arc(150, 150, 105, 0, Math.PI*2, false); // earch orbit
+            ctxA.stroke();
+
+            ctxA.drawImage(sun, 0, 0, 300, 300);
+            window.requestAnimationFrame(draw);
+        }
+
+        init();
+    </script>
+
+    <div class="section">
+        <div class="title">动画时钟</div>
+        <canvas id="canvasB" class="canvas-box" width="300" height="300"></canvas>
+    </div>
+
+    <script>
+
+        function clock() {
+            let ctxB = document.getElementById('canvasB').getContext('2d');
+            let now = new Date();
+            ctxB.save();
+            ctxB.clearRect(0, 0, 150, 150);
+            ctxB.translate(75, 75);
+            ctxB.scale(.4, .4);
+            ctxB.rotate(-Math.PI/2);
+            ctxB.strokeStyle = "black";
+            ctxB.fillStyle = "white";
+            ctxB.lineWidth = 8;
+            ctxB.lineCap = "round";
+
+            // hour marks
+            ctxB.save();
+            for(let i=0;i<12;i++) {
+                ctxB.beginPath();
+                ctxB.rotate(Math.PI/6);
+                ctxB.moveTo(100, 0);
+                ctxB.lineTo(120, 0);
+                ctxB.stroke();
+            }
+            ctxB.restore();
+
+            // minute marks
+            ctxB.save();
+            ctxB.lineWidth = 5;
+            for(let i=0;i<60;i++) {
+                if(i%5 == 0) {
+                    ctxB.beginPath();
+                    ctxB.moveTo(117, 0);
+                    ctxB.lineTo(120, 0);
+                    ctxB.stroke();
+                }
+                ctxB.rotate(Math.PI/30);
+            }
+            ctxB.restore();
+
+            let sec = now.getSeconds();
+            let min = now.getMinutes();
+            let hr = now.getHours();
+            hr = hr>=12 ? hr - 12 : hr;
+
+            ctxB.fillStyle = "block";
+
+            // write hours
+            ctxB.save();
+            ctxB.rotate( hr*(Math.PI/6) + (Math.PI/360)*min + (Math.PI/21600)*sec );
+            ctxB.lineWidth = 14;
+            ctxB.beginPath();
+            ctxB.moveTo(-20, 0);
+            ctxB.lineTo(80, 0);
+            ctxB.stroke();
+            ctxB.restore();
+
+            // write minutes
+            ctxB.save();
+            ctxB.rotate( (Math.PI/30)*min + (Math.PI/1800)*sec );
+            ctxB.lineWidth = 10;
+            ctxB.beginPath();
+            ctxB.moveTo(-28, 0);
+            ctxB.lineTo(112, 0);
+            ctxB.stroke();
+            ctxB.restore();
+
+            // // write seconds
+            ctxB.save();
+            ctxB.rotate( sec*Math.PI/30 );
+            ctxB.strokeStyle = "#D40000";
+            ctxB.fillStyle = "#D40000";
+            ctxB.lineWidth = 6;
+            ctxB.beginPath();
+            ctxB.moveTo(-30, 0);
+            ctxB.lineTo(83, 0);
+            ctxB.stroke();
+            ctxB.beginPath();
+            ctxB.arc(95, 0, 10, 0, Math.PI*2, true);
+            ctxB.fill();
+            ctxB.beginPath();
+            ctxB.arc(95, 0, 10, 0, Math.PI*2, true);
+            ctxB.stroke();
+            ctxB.fillStyle = "rgba(0, 0, 0, 0)";
+            ctxB.arc(0, 0, 3, 0, Math.PI*2, true);
+            ctxB.fill();
+            ctxB.restore();
+
+            ctxB.beginPath();
+            ctxB.lineWidth = 14;
+            ctxB.strokeStyle = "#325FA2";
+            ctxB.arc(0, 0, 142, 0, Math.PI*2, true);
+            ctxB.stroke();
+
+            ctxB.restore();
+
+            window.requestAnimationFrame(clock);
+        }
+
+        window.requestAnimationFrame(clock);
+    </script>
+
+    <div class="section">
+        <div class="title">循环全景照片</div>
+        <canvas id="canvasC" class="canvas-box"></canvas>
+    </div>
+    <script>
+        let img = new Image();
+
+        img.src = 'https://mdn.mozillademos.org/files/4553/Capitan_Meadows,_Yosemite_National_Park.jpg';
+        let canvasXSize = 800;
+        let canvasYSize = 200;
+        let speed = 10;
+        let scale = 1.05;
+        let y = -4.5;
+
+        // main program
+        let dx = 0.75;
+        let imgW, imgH;
+        let x = 0;
+        let clearX, clearY, ctxC;
+
+        img.onload = function() {
+            imgW = img.width*scale;
+            imgH = img.height*scale;
+            if( imgW>canvasXSize ) {
+                x = canvasXSize - imgW;
+                clearX = imgW;
+            } else {
+                clearX = canvasXSize;
+            }
+            if(imgH > canvasYSize) {
+                clearY = imgH;
+            } else {
+                clearY = canvasYSize;
+            }
+            ctxC = document.getElementById('canvasC').getContext('2d');
+            return setInterval( function() {
+                ctxC.clearRect(0, 0, clearX, clearY);
+
+                if(imgW <= canvasXSize) {
+                    if(x>canvasXSize) {x=0;}
+                    if(x>(canvasXSize-imgW)) {ctxC.drawImage(img, x-canvasXSize+1, y, imgW, imgH); }
+                } else {
+                    if(x>canvasXSize) {x = canvasXSize-imgW; }
+                    if(x>(canvasXSize-imgW)) { ctxC.drawImage(img, x-imgW+1, y, imgW, imgH); }
+                }
+                ctxC.drawImage(img, x, y, imgW, imgH);
+
+                x += dx;
+
+            }, speed);
+        }
+
+        function draw(ctx) {
+            ctx.clearRect(0, 0, clearX, clearY);
+
+            if(imgW <= canvasXSize) {
+                if(x>canvasXSize) {x=0;}
+                if(x>(canvasXSize-imgW)) {ctx.drawImage(img, x-canvasXSize+1, y, imgW, imgH); }
+            } else {
+                if(x>canvasXSize) {x = canvasXSize-imgW; }
+                if(x>(canvasXSize-imgW)) { ctx.drawImage(img, x-imgW+1, y, imgW, imgH); }
+            }
+            ctx.drawImage(img, x, y, imgW, imgH);
+
+            x += dx;
+        }
+        
+    </script>
+    
+</body>
+</html>
