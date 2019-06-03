@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>获取本机ip</title>
+    <style>
+        h3 {
+            text-align: center;
+        }
+        h3:first-child {
+            color: #f00;
+            font-size: 2em;
+            letter-spacing: 80px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h3 id="h3" title="" data-dataId="432" class="isTitile">这个貌似必须联网</h3>
+    <h3>或者后台获取ip返回给前台，这个可以不用联网</h3>
+
+
+</body>
+
+<script>
+    let h3 = document.getElementById('h3');
+
+    let aa = h3.getAttribute('data-dataId'); // 可以是固有属性，也可以是自定义属性
+    // let bb = h3.className();
+    h3.style.color = 'blue';
+    h3.style.fontSize = '5em';
+    h3.className = 'isblock'
+    console.log('aa==', aa);
+    // console.log('bb==', bb);
+    
+    function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
+        //compatibility for firefox and chrome
+        var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+        var pc = new myPeerConnection({
+            iceServers: []
+        }),
+            noop = function () { },
+            localIPs = {},
+            ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+            key;
+
+        console.log('myPeerConnection==', myPeerConnection);
+        console.log('pc==', pc);
+
+        function iterateIP(ip) {
+            if (!localIPs[ip]) onNewIP(ip);
+            localIPs[ip] = true;
+        }
+
+        //create a bogus data channel
+        pc.createDataChannel("");
+
+        // create offer and set local description
+        pc.createOffer().then(function (sdp) {
+            sdp.sdp.split('\n').forEach(function (line) {
+                if (line.indexOf('candidate') < 0) return;
+                line.match(ipRegex).forEach(iterateIP);
+            });
+
+            pc.setLocalDescription(sdp, noop, noop);
+        }).catch(function (reason) {
+            // An error occurred, so handle the failure to connect
+        });
+
+        //sten for candidate events
+        pc.onicecandidate = function (ice) {
+            if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+            ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+        };
+    }
+
+    // Usage
+
+    getUserIP(function (ip) {
+        console.log("Got IP! :" + ip);
+    });
+
+</script>
+
+</html>
